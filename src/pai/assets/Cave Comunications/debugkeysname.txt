@@ -1,0 +1,8 @@
+If playerName === ">!<", then the following debugging keys shall be active:
+- g = Genocide Boss
+- G = Genocide Ending
+- p = Pacifist Boss
+- P = Pacifist Ending
+- n = Neutral Boss
+- N = Neutral Ending
+">!<" is a legacy hitmarker variable from the original slur mechanic. It displayed as (|x|>|!|<|x) with a sliding bar (|) moving across the sequence. The goal was to hit the ! — the closer the hit, the more severe the slur effect hence the >!< name. This mechanic has since been removed, but the debug keys remain for testing purposes.

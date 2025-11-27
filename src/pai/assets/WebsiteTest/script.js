@@ -1,0 +1,2 @@
+document.getElementById(":p").onclick = function () {
+    location.href = "../ui.html";}

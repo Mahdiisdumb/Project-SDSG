@@ -1,0 +1,6 @@
+var wingdings = ' "Heh, im gaster now"';
+document.getElementById('A').addEventListener('click', function () {
+    alert('CONGRATS you just saw mahdiisdumbs also known as Martani, Mahdi Studios King/Founder/Inventer/Idea Inovators IDK somthing yo');
+});document.getElementById('T').addEventListener('click', function () {
+    alert('yo i think that wingdings says' + wingdings);
+});

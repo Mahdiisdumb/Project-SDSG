@@ -1,0 +1,153 @@
+/* ---------------- Premium Dark Theme ---------------- */
+:root {
+    --accent: #58a6ff;
+    --accent-2: #79c0ff;
+    --muted: #888;
+    --bg: #0f1116;
+    --card: rgba(15,17,22,0.95);
+}
+
+* {
+    box-sizing: border-box
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Orbitron', 'Courier New', monospace;
+    background: linear-gradient(135deg,var(--bg), #07080b);
+    color: #cfd8dc
+}
+
+.container {
+    width: 95%;
+    max-width: 1000px;
+    background: var(--card);
+    border: 1px solid #1f1f1f;
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 0 40px rgba(88,166,255,0.4);
+    text-align: center;
+    backdrop-filter: blur(6px);
+    margin: 40px auto
+}
+
+h1 {
+    font-size: 3rem;
+    color: var(--accent);
+    text-shadow: 0 0 15px var(--accent);
+    margin-bottom: 30px
+}
+
+h2 {
+    font-size: 1.6rem;
+    color: var(--accent-2);
+    margin: 14px 0
+}
+
+#instructions {
+    text-align: left;
+    margin-bottom: 20px
+}
+
+    #instructions ul {
+        padding-left: 20px
+    }
+
+    #instructions pre {
+        background: #161b22;
+        color: var(--accent);
+        padding: 12px;
+        border-radius: 8px;
+        overflow-x: auto;
+        border-left: 4px solid #f78166
+    }
+
+button {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: #161b22;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .22s ease;
+    margin: 6px
+}
+
+    button:hover {
+        background: var(--accent);
+        color: #0d1117;
+        box-shadow: 0 0 20px var(--accent),0 0 50px var(--accent);
+        transform: scale(1.03)
+    }
+
+input[type="text"] {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    background: rgba(15,17,22,0.85);
+    color: #cfd8dc;
+    margin-right: 10px
+}
+
+#premiumGamesContainer {
+    margin-top: 10px
+}
+
+    #premiumGamesContainer button {
+        display: block;
+        width: 80%;
+        max-width: 420px;
+        margin: 10px auto;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        box-shadow: 0 0 15px rgba(88,166,255,0.25);
+        position: relative;
+        overflow: hidden
+    }
+
+button.locked {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: #444;
+    color: var(--muted);
+    text-shadow: none;
+    box-shadow: none;
+    background: #111
+}
+
+    button.locked:hover {
+        transform: none;
+        box-shadow: 0 0 8px rgba(88,166,255,0.07)
+    }
+/* subtle unlocked glow */
+button.unlocked {
+    box-shadow: 0 0 18px rgba(88,166,255,0.45);
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(22,27,34,0.95), #161b22)
+}
+/* footer badge */
+body::after {
+    content: "PROJECT SDSG PREMIUM // ELITE ACCESS";
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 11px;
+    color: #21262d;
+    opacity: .8;
+    letter-spacing: 1px
+}
+
+@media (max-width:640px) {
+    .container {
+        padding: 20px
+    }
+
+    h1 {
+        font-size: 2rem
+    }
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARG</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            padding: 20px;
+            line-height: 1.5;
+            overflow: hidden;
+        }
+
+        #console {
+            max-width: 800px;
+            margin: auto;
+            white-space: pre-wrap;
+        }
+
+        .glitch {
+            color: #0f0;
+            animation: glitch 0.2s infinite;
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 0 red;
+            }
+
+            20% {
+                text-shadow: -2px 0 blue;
+            }
+
+            40% {
+                text-shadow: 2px 2px red;
+            }
+
+            60% {
+                text-shadow: -2px -2px blue;
+            }
+
+            80% {
+                text-shadow: 2px -2px red;
+            }
+
+            100% {
+                text-shadow: -2px 2px blue;
+            }
+        }
+
+        .jump-scare {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            z-index: 9999;
+        }
+
+            .jump-scare img {
+                width: 200px;
+                height: 200px;
+                object-fit: cover;
+            }
+    </style>
+</head>
+<body>
+    <div id="console"></div>
+    <div id="jumpScare" class="jump-scare"></div>
+    <audio id="screamAudio" src="jump-scare.mp3"></audio>
+
+    <script>
+        const consoleEl = document.getElementById('console');
+        const jumpScareEl = document.getElementById('jumpScare');
+        const screamAudio = document.getElementById('screamAudio');
+
+        // Names to encrypt
+        const allNames = ["Mahdi", "Luke", "Chris", "Andrew",
+            "Blake", "Travis",
+            "Castiel", "Aiden", "Jason", "Jacob", "Alex", "Mohamad"];
+
+        // Story lines
+        const storyLines = [
+            "The town whispers of horrors that struck Mahdi Studios...",
+            "But whispers are lies.",
+            "Blake and Travis, the popular ones, point fingers, spreading rumors.",
+            "",
+            "Castiel, Aiden, Jason, Jacob, Alex, and Mohamad are blamed.",
+            "All innocent friends caught in the shadow of their manipulation.",
+            "",
+            "Mahdiisdumb, the coder, fell first...",
+            "Goober87q, laughing at nothing, vanished in the dark...",
+            "Blark, calm and silent, never seen again...",
+            "k1llz, playful and unsuspecting, disappeared without a trace...",
+            "",
+            "Blake and Travis claim justice, but the truth is twisted.",
+            "The names of the friends flicker and distort...",
+            "Castiel, Aiden, Jason, Jacob, Alex, Mohamad... accused without proof.",
+            "",
+            "And you, watching this... reading these lines...",
+            "Do you see the truth, or just what they want you to see?",
+            "",
+            "The shadows grow long.",
+            "Do not blink.",
+            "Do not look away."
+        ];
+
+        // Function to encrypt a name
+        function encryptName(name) {
+            return name.split("").map(c => String.fromCharCode(33 + Math.floor(Math.random() * 94))).join("");
+        }
+
+        function corruptNames(line) {
+            allNames.forEach(name => {
+                const regex = new RegExp(name, "g");
+                line = line.replace(regex, () => encryptName(name));
+            });
+            return line;
+        }
+
+        function typeLine(line, callback) {
+            line = corruptNames(line);
+            let i = 0;
+            const interval = setInterval(() => {
+                let char = line.charAt(i);
+                if (Math.random() < 0.05 && char !== " ") {
+                    char = String.fromCharCode(33 + Math.floor(Math.random() * 94));
+                    consoleEl.innerHTML += `<span class="glitch">${char}</span>`;
+                } else {
+                    consoleEl.innerHTML += char;
+                }
+                i++;
+                if (i >= line.length) {
+                    clearInterval(interval);
+                    consoleEl.innerHTML += "\n";
+                    callback();
+                }
+            }, 50);
+        }
+
+        let lineIndex = 0;
+
+        function nextLine() {
+            if (lineIndex < storyLines.length) {
+                typeLine(storyLines[lineIndex], () => {
+                    lineIndex++;
+                    setTimeout(nextLine, 400);
+                });
+            } else {
+                triggerJumpScare();
+            }
+        }
+
+        function triggerJumpScare() {
+            const images = ["m.png", "l.png", "c.png", "a.png"];
+            images.forEach(src => {
+                const img = document.createElement('img');
+                img.src = src;
+                jumpScareEl.appendChild(img);
+            });
+            screamAudio.play();
+            jumpScareEl.style.display = "flex";
+        }
+
+        nextLine();
+    </script>
+</body>
+</html>
