@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("mod").onclick = function () {
         location.href = "./Modding/modding.pdf";
     };
+        document.getElementById("web").onclick = function () {
+        location.href = "./ifweb/run.html";
+    };
 
     const today = new Date();
     const month = today.getMonth(); // 0-indexed: October = 9, November = 10

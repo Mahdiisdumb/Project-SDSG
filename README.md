@@ -1,1 +1,1 @@
-Project SDSG(School Defying Software Games) is unblocked local html5 games it can even be online too but its better local
+# Project-SDSG: A collection of offline HTML5 games that run on school or restricted computers with no internet required.
