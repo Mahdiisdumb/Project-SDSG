@@ -15,7 +15,10 @@
         let fleeMsg = ""; if (playerHP <= 20) { fleeMsg = `<br><span style="color:#ffcc00;font-weight:bold;">Tip: You can flee by selecting Mercy &gt; Flee!</span>` }
         document.getElementById('log').innerHTML = msg.replace(/\n/g, '<br>') + mercyMsg + olMsg + fleeMsg
     }
-    let consecutiveKills = 0; const musicTracks = ["1.mp3", "2.mp3", "3.mp3", "4.mp3", "5.mp3", "6.ogg", "7.ogg", "8.ogg", "9.ogg", "10.mp3"]; let chosenTrack = musicTracks[Math.floor(Math.random() * musicTracks.length)]; const audio = document.createElement('audio'); audio.src = chosenTrack; audio.volume = 0.5; audio.loop = !0; audio.id = 'bg-music'; document.body.appendChild(audio); const olAudio = document.createElement('audio'); olAudio.src = "OL.ogg"; olAudio.volume = 0.5; olAudio.loop = !0; olAudio.id = 'ol-music'; document.body.appendChild(olAudio); const heartbeatAudio = document.createElement('audio'); heartbeatAudio.src = 'heartbeat.wav'; document.body.appendChild(heartbeatAudio); const winAudio = document.createElement('audio'); winAudio.src = "w.ogg"; document.body.appendChild(winAudio); const loseAudio = document.createElement('audio'); loseAudio.src = "l.mp3"; document.body.appendChild(loseAudio); const hurtAudio = document.createElement('audio'); hurtAudio.src = "hurt.wav"; document.body.appendChild(hurtAudio); const slashAudio = document.createElement('audio'); slashAudio.src = "slash.wav"; document.body.appendChild(slashAudio); const healAudio = document.createElement('audio'); healAudio.src = "heal.wav"; document.body.appendChild(healAudio); const ohealAudio = document.createElement('audio'); ohealAudio.src = "oheal.wav"; document.body.appendChild(ohealAudio); const spareAudio = document.createElement('audio'); spareAudio.src = "s.wav"; document.body.appendChild(spareAudio); const killAudio = document.createElement('audio'); killAudio.src = "k.mp3"; document.body.appendChild(killAudio); const moveAudio = document.createElement('audio'); moveAudio.src = "mv.wav"; moveAudio.preload = "auto"; moveAudio.volume = 1; document.body.appendChild(moveAudio); const selectAudio = document.createElement('audio'); selectAudio.src = "sel.wav"; selectAudio.preload = "auto"; selectAudio.volume = 1; document.body.appendChild(selectAudio); let currentBossMusic = null; let heartbeatIntervalId = null; let isLowHPMusicPlaying = !1; function stopAllMusic() { safePause(audio); safePause(olAudio); safePause(currentBossMusic); safePause(winAudio); safePause(loseAudio) }
+    let consecutiveKills = 0; const musicTracks = [
+  "mus/1.mp3", "mus/2.mp3", "mus/3.mp3", "mus/4.mp3", "mus/5.mp3",
+  "mus/6.ogg", "mus/7.mp3", "mus/8.ogg", "mus/9.ogg", "mus/10.mp3",
+]; let chosenTrack = musicTracks[Math.floor(Math.random() * musicTracks.length)]; const audio = document.createElement('audio'); audio.src = chosenTrack; audio.volume = 0.5; audio.loop = !0; audio.id = 'bg-music'; document.body.appendChild(audio); const olAudio = document.createElement('audio'); olAudio.src = "mus/OL.ogg"; olAudio.volume = 0.5; olAudio.loop = !0; olAudio.id = 'ol-music'; document.body.appendChild(olAudio); const heartbeatAudio = document.createElement('audio'); heartbeatAudio.src = 'sfx/heartbeat.wav'; document.body.appendChild(heartbeatAudio); const winAudio = document.createElement('audio'); winAudio.src = "sfx/w.ogg"; document.body.appendChild(winAudio); const loseAudio = document.createElement('audio'); loseAudio.src = "sfx/l.mp3"; document.body.appendChild(loseAudio); const hurtAudio = document.createElement('audio'); hurtAudio.src = "sfx/hurt.wav"; document.body.appendChild(hurtAudio); const slashAudio = document.createElement('audio'); slashAudio.src = "sfx/slash.wav"; document.body.appendChild(slashAudio); const healAudio = document.createElement('audio'); healAudio.src = "sfx/heal.wav"; document.body.appendChild(healAudio); const ohealAudio = document.createElement('audio'); ohealAudio.src = "sfx/oheal.wav"; document.body.appendChild(ohealAudio); const spareAudio = document.createElement('audio'); spareAudio.src = "sfx/s.wav"; document.body.appendChild(spareAudio); const killAudio = document.createElement('audio'); killAudio.src = "sfx/k.mp3"; document.body.appendChild(killAudio); const moveAudio = document.createElement('audio'); moveAudio.src = "sfx/mv.wav"; moveAudio.preload = "auto"; moveAudio.volume = 1; document.body.appendChild(moveAudio); const selectAudio = document.createElement('audio'); selectAudio.src = "sfx/sel.wav"; selectAudio.preload = "auto"; selectAudio.volume = 1; document.body.appendChild(selectAudio); let currentBossMusic = null; let heartbeatIntervalId = null; let isLowHPMusicPlaying = !1; function stopAllMusic() { safePause(audio); safePause(olAudio); safePause(currentBossMusic); safePause(winAudio); safePause(loseAudio) }
     function playMusic(file) { try { if (currentBossMusic) safePause(currentBossMusic); currentBossMusic = new Audio(file); currentBossMusic.loop = !0; currentBossMusic.volume = 1.0; safePlay(currentBossMusic) } catch (e) { } }
     function startHeartbeat() { if (heartbeatIntervalId) return; heartbeatIntervalId = setInterval(() => { try { heartbeatAudio.currentTime = 0; safePlay(heartbeatAudio) } catch (e) { } }, 1000) }
     function stopHeartbeat() { if (heartbeatIntervalId) { clearInterval(heartbeatIntervalId); heartbeatIntervalId = null } }
@@ -34,7 +37,7 @@
     function checkLowHP() { const lowOpponent = opponents.find(op => op.hp > 0 && op.hp <= 20); if (lowOpponent && !isLowHPMusicPlaying) { audio.pause(); olAudio.currentTime = 0; olAudio.play(); isLowHPMusicPlaying = !0 } else if (!lowOpponent && isLowHPMusicPlaying) { olAudio.pause(); audio.play(); isLowHPMusicPlaying = !1 } }
     function generateOpponents(options = {}) {
         const isFinal = !!options.finalBoss; const list = []; if (isFinal) { list.push({ name: "Mahdiisdumb", hp: 400, state: "angry", mercyPattern: [], mercyProgress: 0, isFinal: !0 }) } else { const count = Math.floor(Math.random() * 3) + 1; const used = new Set(); for (let i = 0; i < count; i++) { let name; do { name = opponentNames[Math.floor(Math.random() * opponentNames.length)] } while (used.has(name)); used.add(name); list.push({ name, hp: 100, state: "angry", mercyPattern: mercyPatterns[Math.floor(Math.random() * mercyPatterns.length)], mercyProgress: 0, isFinal: !1 }) } }
-        opponents = list; currentEncounterOriginalCount = list.length; currentEncounterKills = 0; currentEncounterSpared = 0; inFinalBoss = !!options.finalBoss; if (inFinalBoss) { const route = determineRoute(); const boss = opponents[0]; stopAllMusic(); if (route === "pacifist") { boss.name = "Blue, the Bearer of Mega Healing"; boss.hp = 999999; boss.mercyPattern = ["SURVIVE FOR 2 MINUTES"]; boss.noAttack = !1; boss.attackType = "nonMercy"; boss.lowDamage = !1; playMusic("dan.mp3"); startHeartbeat(); let battleTime = 0; const maxTime = 120000; const timerInterval = 1000; boss.canBeSpared = !1; const timerId = setInterval(() => { battleTime += timerInterval; const seconds = Math.floor(battleTime / 1000); log(`Survive time: ${seconds} / 120 seconds`); if (battleTime >= maxTime) { clearInterval(timerId); boss.canBeSpared = !0; boss.mercyPattern = ["YOU CAN SPARE NOW"]; log("You survived long enough! You can now spare Blue!") } }, timerInterval); const enemyBP = () => { const intensity = { spawnInterval: 500, speed: 1.5, insultChance: 1.0, damageRange: [5, 12], }; const bp = startBattlePhase(boss, 10000, intensity); bp.onAttackSpawn = (attack) => { if (!attack.hasCompliment && Math.random() < 0.1) { attack.hasCompliment = !0; log(`${boss.name} says: "You can do it!"`) } }; bp.setOnEnd(() => { if (battleTime < maxTime) enableMenu(); }) }; enemyBP() } else if (route === "genocide") { boss.name = "Mahdiisdumb"; boss.hp = 10000; boss.mercyPattern = ["NO MERCY"]; boss.noAttack = !1; boss.alwaysAttack = !0; boss.attackType = "insult"; playMusic("sinner.mp3"); startHeartbeat() } else { boss.name = "Lambda Flower"; boss.hp = 5000; boss.mercyPattern = ["null"]; boss.noAttack = !1; boss.lowDamage = !0; boss.attackType = "mixed"; playMusic("sad boss.mp3"); startHeartbeat() } }
+        opponents = list; currentEncounterOriginalCount = list.length; currentEncounterKills = 0; currentEncounterSpared = 0; inFinalBoss = !!options.finalBoss; if (inFinalBoss) { const route = determineRoute(); const boss = opponents[0]; stopAllMusic(); if (route === "pacifist") { boss.name = "=)"; boss.hp = 999999; boss.mercyPattern = ["SURVIVE"]; boss.noAttack = !1; boss.attackType = "nonMercy"; boss.lowDamage = !1; playMusic("mus/dan.mp3"); startHeartbeat(); let battleTime = 0; const maxTime = 600000; const timerInterval = 1000; boss.canBeSpared = !1; const timerId = setInterval(() => { battleTime += timerInterval; const seconds = Math.floor(battleTime / 1000); log(`Survive time: ${seconds} / 600`); if (battleTime >= maxTime) { clearInterval(timerId); boss.canBeSpared = !0; boss.mercyPattern = ["YOU CAN SPARE NOW"]; log("You survived long enough! You can now spare WHAT EVER THE FUCK THIS CREATURE IS!") } }, timerInterval); const enemyBP = () => { const intensity = { spawnInterval: 5, speed: 16, insultChance: 1.0, damageRange: [5, 12], }; const bp = startBattlePhase(boss, 10000, intensity); bp.onAttackSpawn = (attack) => { if (!attack.hasCompliment && Math.random() < 0.1) { attack.hasCompliment = !0; log(`${boss.name} says: "You can do it!"`) } }; bp.setOnEnd(() => { if (battleTime < maxTime) enableMenu(); }) }; enemyBP() } else if (route === "genocide") { boss.name = "Mahdiisdumb"; boss.hp = 10000; boss.mercyPattern = ["NO MERCY"]; boss.noAttack = !1; boss.alwaysAttack = !0; boss.attackType = "insult"; playMusic("mus/sinner.mp3"); startHeartbeat() } else { boss.name = "Lambda Flower"; boss.hp = 5000; boss.mercyPattern = ["null"]; boss.noAttack = !1; boss.lowDamage = !0; boss.attackType = "mixed"; playMusic("mus/sb.mp3"); startHeartbeat() } }
         updateHP(); return opponents
     }
     function clearBattleAndUIForEnding() {
@@ -47,7 +50,7 @@
         stopAllMusic()
     }
     function triggerGenocideEnding() {
-        clearBattleAndUIForEnding(); stopHeartbeat(); startHeartbeat(); const genocideMusic = new Audio('toomuch.mp3'); genocideMusic.loop = !0; genocideMusic.volume = 0.3; window.__toomuchAudio = genocideMusic; safePlay(genocideMusic); const overlay = document.createElement('div'); overlay.id = 'genocide-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: 'radial-gradient(circle, #000 0%, #110000 100%)', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = "But nobody came.\nGenocide completed ◉_◉\nYou are left standing — hollow, unwanted, unworthy of mercy.\nWe forged you into a vessel of oblivion.\nCome. Leave this ruined place with us.\nForget them. Forget yourself.\nAnother empty world waits; move on, as you were made to do."; Object.assign(txt.style, { color: '#ff0000', fontFamily: 'DTM', fontSize: '24px', textAlign: 'center', userSelect: 'none', opacity: '0', maxWidth: '70%', lineHeight: '1.2', filter: 'blur(2px)', textShadow: '0 0 10px #ff0000, 0 0 20px #880000', transform: 'translateY(0px)' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
+        clearBattleAndUIForEnding(); stopHeartbeat(); startHeartbeat(); const genocideMusic = new Audio('mus/toomuch.mp3'); genocideMusic.loop = !0; genocideMusic.volume = 0.3; window.__toomuchAudio = genocideMusic; safePlay(genocideMusic); const overlay = document.createElement('div'); overlay.id = 'genocide-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: 'radial-gradient(circle, #000 0%, #110000 100%)', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = "But nobody came.\nGenocide completed ◉_◉\nYou are left standing — hollow, unwanted, unworthy of mercy.\nWe forged you into a vessel of oblivion.\nCome. Leave this ruined place with us.\nForget them. Forget yourself.\nAnother empty world waits; move on, as you were made to do."; Object.assign(txt.style, { color: '#ff0000', fontFamily: 'DTM', fontSize: '24px', textAlign: 'center', userSelect: 'none', opacity: '0', maxWidth: '70%', lineHeight: '1.2', filter: 'blur(2px)', textShadow: '0 0 10px #ff0000, 0 0 20px #880000', transform: 'translateY(0px)' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
         overlay.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 4000, fill: 'forwards' }); setTimeout(() => { txt.animate([{ opacity: 0, filter: 'blur(4px)' }, { opacity: 1, filter: 'blur(0px)' }], { duration: 4000, fill: 'forwards' }) }, 1000); let flip = !0; setInterval(() => { txt.style.opacity = flip ? '0.85' : '1'; txt.style.transform = `translate(${Math.random() * 4 - 2}px, ${Math.random() * 4 - 2}px)`; flip = !flip }, 200); const shadowDrift = () => {
             txt.style.textShadow = `
             ${Math.random() * 20 - 10}px ${Math.random() * 20 - 10}px 20px #880000,
@@ -56,11 +59,11 @@
         }; shadowDrift()
     }
     function triggerPacifistEnding() {
-        clearBattleAndUIForEnding(); safePause(heartbeatAudio); const peaceMusic = new Audio('peace.mp3'); peaceMusic.loop = !0; peaceMusic.volume = 0.7; window.__peaceAudio = peaceMusic; safePlay(peaceMusic); const overlay = document.createElement('div'); overlay.id = 'pacifist-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: '#fff', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = 'The Communication Barrier has been broken. Bullys and Kindys now live on the surface in peace.'; Object.assign(txt.style, { color: '#000', fontFamily: 'DTM', fontSize: '40px', textAlign: 'center', userSelect: 'none', opacity: '0', transform: 'scale(0.5) translateY(50px)', transition: 'opacity 2s ease-in, transform 3s ease-out' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
+        clearBattleAndUIForEnding(); safePause(heartbeatAudio); const peaceMusic = new Audio('mus/peace.mp3'); peaceMusic.loop = !0; peaceMusic.volume = 0.7; window.__peaceAudio = peaceMusic; safePlay(peaceMusic); const overlay = document.createElement('div'); overlay.id = 'pacifist-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: '#fff', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = 'The Communication Barrier has been broken. Bullys and Kindys now live on the surface in peace.'; Object.assign(txt.style, { color: '#000', fontFamily: 'DTM', fontSize: '40px', textAlign: 'center', userSelect: 'none', opacity: '0', transform: 'scale(0.5) translateY(50px)', transition: 'opacity 2s ease-in, transform 3s ease-out' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
         requestAnimationFrame(() => { overlay.style.opacity = '1'; txt.style.opacity = '1'; txt.style.transform = 'scale(1) translateY(0px)' }); setInterval(() => { txt.style.transform = `scale(1.02) translateY(${Math.sin(Date.now() / 500) * 10}px)` }, 50)
     }
     function triggerNeutralEnding() {
-        clearBattleAndUIForEnding(); safePause(heartbeatAudio); const neutralMusic = new Audio('nuetural.ogg'); neutralMusic.loop = !0; neutralMusic.volume = 0.6; window.__neutralAudio = neutralMusic; safePlay(neutralMusic); const overlay = document.createElement('div'); overlay.id = 'neutral-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: '#2b2b2b', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = 'You escaped, but the cave is still in despair.'; Object.assign(txt.style, { color: '#fff', fontFamily: 'DTM', fontSize: '36px', textAlign: 'center', userSelect: 'none', opacity: '0', transform: 'translateY(20px) blur(4px)', transition: 'opacity 2.5s ease-in, transform 3s ease-out' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
+        clearBattleAndUIForEnding(); safePause(heartbeatAudio); const neutralMusic = new Audio('mus/nuetural.ogg'); neutralMusic.loop = !0; neutralMusic.volume = 0.6; window.__neutralAudio = neutralMusic; safePlay(neutralMusic); const overlay = document.createElement('div'); overlay.id = 'neutral-overlay'; Object.assign(overlay.style, { position: 'fixed', inset: '0', width: '100%', height: '100%', background: '#2b2b2b', zIndex: 2147483647, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'auto', opacity: '0', overflow: 'hidden' }); const txt = document.createElement('div'); txt.textContent = 'You escaped, but the cave is still in despair.'; Object.assign(txt.style, { color: '#fff', fontFamily: 'DTM', fontSize: '36px', textAlign: 'center', userSelect: 'none', opacity: '0', transform: 'translateY(20px) blur(4px)', transition: 'opacity 2.5s ease-in, transform 3s ease-out' }); overlay.appendChild(txt); document.body.appendChild(overlay); try { const uiContainers = document.querySelectorAll('header, nav, #log, #menu, .ui, .controls'); uiContainers.forEach(el => el.style.visibility = 'hidden') } catch (e) { }
         requestAnimationFrame(() => { overlay.style.opacity = '1'; txt.style.opacity = '1'; txt.style.transform = 'translateY(0px) blur(0px)' }); let pulse = 1; setInterval(() => { pulse = pulse === 1 ? 1.05 : 1; txt.style.transform = `translateY(0px) scale(${pulse})` }, 2000)
     }
     function handleEncounterClear() {
@@ -186,160 +189,112 @@
             enableMenu(); if (typeof onBattlePhaseEnd === "function") onBattlePhaseEnd(); onBattlePhaseEnd = null
         }; battleAnimId = requestAnimationFrame(step); const autoStopId = setTimeout(() => { if (battlePhaseActive) stopBattle(); }, duration); let onBattlePhaseEnd = null; return { stopBattle, setOnEnd(cb) { onBattlePhaseEnd = cb } }
     }
-    function handleEnemyDeath(opponent) {
-        // Increment kill count
-        if (!window.kills) window.kills = 0;
-        window.kills++;
+function handleEnemyDeath(opponentIndex) {
+    const opponent = opponents[opponentIndex];
+    if (!opponent) return;
 
-        log(`💀 You defeated ${opponent.name}!`);
-        safePlay(killAudio);
+    if (opponent.hp <= 0) {
+        totalKilled++;
+        log(`${opponent.name} has been defeated!`);
+        killAudio.currentTime = 0;
+        killAudio.play();
 
-        // Remove only the defeated opponent from the array
-        const index = opponents.indexOf(opponent);
-        if (index !== -1) opponents.splice(index, 1);
+        // Remove enemy from array
+        opponents.splice(opponentIndex, 1);
 
-        // Clear enemy UI for this opponent
-        document.getElementById("enemy-hp").textContent = "—";
+        // Reset selection to first available opponent
+        selectedOpponentIndex = opponents.length > 0 ? 0 : -1;
 
-        // Optional: visually fade out or clear the fight area
-        const fightContainer = document.getElementById("fight-container");
-        fightContainer.style.opacity = "0.5";
+        // Update UI
+        updateHP();
 
-        // Disable menu buttons briefly
-        document.querySelectorAll(".menu button, .submenu button").forEach(btn => {
-            btn.disabled = true;
-        });
-
-        // Short delay, then continue with next opponent if any
-        setTimeout(() => {
-            fightContainer.style.opacity = "1"; // restore opacity
-
-            if (opponents.length > 0) {
-                // Just pick the next opponent without resetting the battle
-                selectedOpponentIndex = 0; // or whatever logic you use for next
-                const nextOpponent = opponents[selectedOpponentIndex];
-                log(`⚔️ ${nextOpponent.name} steps up!`);
-                updateHP(); // reset the HP display for the new opponent
-
-                // Re-enable menu buttons
-                document.querySelectorAll(".menu button, .submenu button").forEach(btn => {
-                    btn.disabled = false;
-                });
-            } else {
-                // All opponents defeated, move on
-                determineRoute();
-            }
-        }, 1200);
+        // If all enemies cleared, handle encounter clear
+        if (opponents.length === 0) {
+            handleEncounterClear(); // This increments encounterCount and triggers final boss if needed
+        }
     }
-
-
-
-    // At game start (after selecting name & soul)
+}    // At game start (after selecting name & soul)
     const eye = document.getElementById("player-eye");
     eye.style.display = "none"; // hide it initially
 
     // Modify your SlurMenu function
-    function SlurMenu(opponent) {
-        opponent = opponent || opponents[selectedOpponentIndex];
-        if (!opponent) return;
+   function SlurMenu(opponent) {
+    opponent = opponent || opponents[selectedOpponentIndex];
+    if (!opponent) return;
 
-        const container = document.getElementById("fight-container");
-        const eye = document.getElementById("player-eye");
+    const container = document.getElementById("fight-container");
+    const eye = document.getElementById("player-eye");
+    eye.style.display = "block";
 
-        // Show the eye when Slur menu starts
-        eye.style.display = "block";
-
-        // Animate the eye with a subtle pulse
-        let pulseDirection = 1;
-        let baseWidth = 546;
-        let baseHeight = 115;
-        let pulseAmount = 5; // pixels to grow/shrink
-        let pulseSpeed = 0.5; // per frame
-        let pulseAnimationActive = true;
-
-        function pulseEye() {
-            if (!pulseAnimationActive) return;
-            const currentWidth = parseFloat(eye.style.width);
-            const currentHeight = parseFloat(eye.style.height);
-
-            if (currentWidth >= baseWidth + pulseAmount) pulseDirection = -1;
-            if (currentWidth <= baseWidth - pulseAmount) pulseDirection = 1;
-
-            eye.style.width = currentWidth + pulseSpeed * pulseDirection + "px";
-            eye.style.height = currentHeight + (pulseSpeed * pulseDirection * baseHeight / baseWidth) + "px";
-
-            requestAnimationFrame(pulseEye);
-        }
-
-        pulseEye();
-
-        // Ensure container has relative positioning
-        container.style.position = "relative";
-
-        const eyeRect = eye.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const eyeCenter = (eyeRect.left - containerRect.left) + eyeRect.width / 2;
-
-        // Create moving bar
-        let bar = document.createElement("div");
-        Object.assign(bar.style, {
-            position: "absolute",
-            width: "10px",
-            height: "50px",
-            background: playerSoulColor || "red", // use soul color
-            top: eye.offsetTop + "px",
-            left: "0px",
-        });
-        container.appendChild(bar);
-
-        let barPos = 0;
-        let speed = 4;
-        let direction = 1;
-        let hitRegistered = false;
-
-        function animateBar() {
-            barPos += speed * direction;
-            if (barPos <= 0) direction = 1;
-            if (barPos >= container.offsetWidth - bar.offsetWidth) direction = -1;
-            bar.style.left = barPos + "px";
-            if (!hitRegistered) requestAnimationFrame(animateBar);
-        }
-
-        animateBar();
-
-        function onKeyPress(e) {
-            if (!hitRegistered && (e.code === "KeyZ" || e.code === "Enter")) {
-                hitRegistered = true;
-
-                const barCenter = barPos + bar.offsetWidth / 2;
-                const dist = Math.abs(barCenter - eyeCenter);
-                const maxDamage = 100;
-                const maxDist = container.offsetWidth / 2;
-                let damage = Math.max(0, Math.round(maxDamage * (1 - dist / maxDist)));
-
-                opponent.hp -= damage;
-                if (opponent.hp < 0) opponent.hp = 0;
-
-                log(`You hit ${opponent.name} for ${damage} damage!`);
-                updateHP();
-                safePlay(slashAudio);
-
-                if (opponent.hp <= 0) handleEnemyDeath(opponent);
-                else setTimeout(enemyTurn, 800);
-
-                // Remove bar and stop eye animation
-                container.removeChild(bar);
-                pulseAnimationActive = false;
-                eye.style.display = "none";
-                eye.style.width = baseWidth + "px";
-                eye.style.height = baseHeight + "px";
-
-                document.removeEventListener("keydown", onKeyPress);
-            }
-        }
-
-        document.addEventListener("keydown", onKeyPress);
+    // Eye pulse
+    let pulseDir = 1, pulseActive = true;
+    const baseW = 546, baseH = 115, pulseAmt = 5, pulseSpeed = 0.5;
+    function pulseEye() {
+        if (!pulseActive) return;
+        let w = parseFloat(eye.style.width || baseW);
+        let h = parseFloat(eye.style.height || baseH);
+        if (w >= baseW + pulseAmt) pulseDir = -1;
+        if (w <= baseW - pulseAmt) pulseDir = 1;
+        eye.style.width = (w + pulseSpeed * pulseDir) + "px";
+        eye.style.height = (h + (pulseSpeed * pulseDir * baseH / baseW)) + "px";
+        requestAnimationFrame(pulseEye);
     }
+    pulseEye();
+
+    // Moving bar
+    container.style.position = "relative";
+    const eyeCenter = eye.offsetLeft + eye.offsetWidth / 2;
+
+    const bar = document.createElement("div");
+    Object.assign(bar.style, {
+        position: "absolute",
+        width: "10px",
+        height: "50px",
+        background: playerSoulColor || "red",
+        top: eye.offsetTop + "px",
+        left: "0px"
+    });
+    container.appendChild(bar);
+
+    let barPos = 0, dir = 1, speed = 4, hit = false;
+    function animateBar() {
+        if (hit) return;
+        barPos += speed * dir;
+        if (barPos <= 0) dir = 1;
+        if (barPos >= container.offsetWidth - bar.offsetWidth) dir = -1;
+        bar.style.left = barPos + "px";
+        requestAnimationFrame(animateBar);
+    }
+    animateBar();
+
+    function onKeyPress(e) {
+        if (hit) return;
+        if (e.code === "KeyZ" || e.code === "Enter") {
+            hit = true;
+            const barCenter = barPos + bar.offsetWidth / 2;
+            const maxDist = container.offsetWidth / 2;
+            const damage = Math.max(0, Math.round(100 * (1 - Math.abs(barCenter - eyeCenter) / maxDist)));
+            opponent.hp = Math.max(0, opponent.hp - damage);
+
+            log(`You hit ${opponent.name} for ${damage} damage!`);
+            updateHP();
+            safePlay(slashAudio);
+
+            if (opponent.hp <= 0) handleEnemyDeath(selectedOpponentIndex);
+            else setTimeout(enemyTurn, 800);
+
+            // Cleanup
+            pulseActive = false;
+            eye.style.display = "none";
+            eye.style.width = baseW + "px";
+            eye.style.height = baseH + "px";
+            container.removeChild(bar);
+            document.removeEventListener("keydown", onKeyPress);
+        }
+    }
+    document.addEventListener("keydown", onKeyPress);
+}
+
     function useItem() {
         if (!turnActive) return; if (playerItems > 0) {
             let heal = 20
