@@ -1,21 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Project SDSG  About</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <title>Project SDSG(about)</title>
-    <iframe id="Logo" src="Mahdi Studios Logo.png" frameborder="0" height="380" width="366" style="display: block; margin: 0 auto;"></iframe>
-    <iframe src="SDSG Logo.jpeg" frameborder="0" height="380" width="366" style="display: block; margin: 0 auto;"></iframe>
-    <div class="container">
-        <h1>Project SDSG About</h1>
-        <p>Project SDSG Owners: Mahdi Studios</p>
-        <p>Project SDSG was made by mahdi studios after when they found out that they found out they chromebooks can indeed run html files so they injected code onto a USB and project's sdsg grandfather was made yea it was weird because it wasnt offline if teachers found out that we were sharing this so called USB it was DOOMED to get errased so we made it offline and backed it up to google drive as USB.zip after that we renamed it to project sdsg (Shool Defying Software Games)</p>
-        <p>Mahdi Studios Emplyoyes (Working On SDSG): Mahdi, Luke, Jason, Ibraheem, Jacob, Alex, CJ, Andrew, Mohamad and Christopher</p>
-        <button id="back">Go Back</button>
-        <button id="MS">Learn More About Mahdi Studios</button>
-        <script src="script.js"></script>
-        <audio src="music.mp3" autoplay controls loop></audio>
-    </div>
+    <main class="container" style="max-width:900px;margin:24px auto;padding:16px;">
+        <header style="text-align:center;">
+            <img src="SDSG Logo.jpeg" alt="SDSG Logo" style="height:160px;width:auto;display:block;margin:0 auto 12px;" />
+            <h1>About Project SDSG</h1>
+            <p style="color:#555;margin-top:6px;">A local game collection packaged and maintained by Mahdiisdumb.</p>
+        </header>
+
+        <section aria-labelledby="overview" style="margin-top:18px;">
+            <h2 id="overview">Overview</h2>
+            <p>
+                Project SDSG was created and is maintained by <strong>Mahdiisdumb</strong>. The project began as a portable
+                collection designed to run from local HTML files. It was originally distributed on removable media and
+                archived as USB.zip and later renamed to Project SDSG (School Defying Software Games).
+            </p>
+            <p style="color:#666;font-size:0.95rem;">
+                Note: SDSG is provided as a community project for offline use and local testing. The project does not
+                encourage bypassing security controls; local packaging simply ensures availability when network access is
+                limited.
+            </p>
+        </section>
+
+        <section aria-labelledby="maintainers" style="margin-top:14px;">
+            <h2 id="maintainers">Maintainer & Contributors</h2>
+            <p><strong>Maintainer:</strong> Mahdiisdumb</p>
+            <p><strong>Contributors:</strong> Mahdiisdumb, Luke, Jason, Ibraheem, Jacob, Alex, CJ, Andrew, Mohamad, Christopher</p>
+        </section>
+
+        <nav style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;">
+            <button id="back" type="button" style="padding:10px 14px;font-size:15px;cursor:pointer;">Go Back</button>
+            <button id="MS" type="button" style="padding:10px 14px;font-size:15px;cursor:pointer;">Learn More about Mahdi studios and Mahdiisdumb</button>
+            <button id="github" type="button" style="padding:10px 14px;font-size:15px;cursor:pointer;">Github</button>
+        </nav>
+
+        <footer style="margin-top:18px;color:#666;font-size:0.9rem;">
+            <p>Project SDSG — Community project. For full project details, see the repository.</p>
+        </footer>
+
+        <audio src="music.mp3" autoplay controls loop style="margin-top:12px;width:100%;"></audio>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
