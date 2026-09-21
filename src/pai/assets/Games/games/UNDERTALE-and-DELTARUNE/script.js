@@ -1,1 +1,1 @@
-document.getElementById("h").onclick=function(){location.href="./r.html"};document.getElementById("UT").onclick=function(){location.href="./Launcher/run.html"};document.getElementById("UTMM").onclick=function(){location.href="./UTMM/run.html"};
+document.getElementById("h").onclick=function(){location.href="./r.html"};document.getElementById("UT").onclick=function(){location.href="./UT/run.html"};document.getElementById("DR").onclick=function(){location.href="./DR/run.html"};
