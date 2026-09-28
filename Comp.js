@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT_DIR = './';
-const IGNORE_DIRS = ['.git', 'node_modules'];
+const IGNORE_DIRS = ['.git', 'node_modules', 'cdn'];
 
 // Recursively get all files
 function getAllFiles(dir) {
