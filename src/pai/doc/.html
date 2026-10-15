@@ -1,93 +1,1116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Castiel SDK Documentation</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body { background: #1e1e1e; color: #fff; font-family: Consolas, monospace; margin: 0; padding: 20px; }
-    h1, h2, h3 { color: #f0f0f0; }
-    code { background: #2e2e2e; padding: 2px 4px; border-radius: 3px; }
-    pre { background: #2e2e2e; padding: 10px; overflow-x: auto; border-radius: 5px; }
-    section { margin-bottom: 40px; }
-    a { color: #4da6ff; text-decoration: none; }
-    footer { color: #9a9a9a; margin-top: 40px; }
-    ul { line-height: 1.6; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Castiel SDK 3.0 Documentation</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #1e1e1e;
+    color: #eeeeee;
+    font-family: Consolas, "Courier New", monospace;
+}
+
+body {
+    padding: 35px;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    font-size: 36px;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+h2 {
+    margin-top: 45px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #3b3b3b;
+    color: #ffffff;
+}
+
+h3 {
+    margin-top: 28px;
+    color: #dddddd;
+}
+
+p,
+li {
+    color: #c8c8c8;
+    line-height: 1.6;
+}
+
+a {
+    color: #716fee;
+}
+
+code {
+    background: #2b2b2b;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+pre {
+    background: #141414;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    color: #eeeeee;
+    line-height: 1.5;
+}
+
+.note {
+    background: #252525;
+    border-left: 4px solid #716fee;
+    padding: 12px 16px;
+    margin: 20px 0;
+}
+
+.warning {
+    background: #292525;
+    border-left: 4px solid #d66;
+    padding: 12px 16px;
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    border: 1px solid #3a3a3a;
+    padding: 9px;
+    text-align: left;
+}
+
+th {
+    background: #292929;
+}
+
+td {
+    background: #202020;
+}
+
+.api {
+    color: #716fee;
+    font-weight: bold;
+}
+
+.signature {
+    color: #aaa;
+    margin-top: -10px;
+}
+
+footer {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    color: #777;
+}
+
+.toc {
+    background: #202020;
+    border: 1px solid #333;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin: 25px 0;
+}
+
+.toc ul {
+    margin-bottom: 0;
+}
+
+.toc a {
+    text-decoration: none;
+}
+
+.toc a:hover {
+    text-decoration: underline;
+}
+</style>
 </head>
+
 <body>
-  <h1>Castiel SDK Documentation</h1>
-  <p>Install or browse the project on <a href="https://github.com/Mahdiisdumb/Castiel" target="_blank">GitHub</a>.</p>
+<main>
 
-  <section>
-    <h2>Core Game Functions</h2>
-    <h3>Castiel.game(definition)</h3>
-    <p>Registers your game logic. Requires an <code>update(dt)</code> function. Optionally add <code>init()</code> and <code>destroy()</code>.</p>
-    <pre><code>Castiel.game({
-  init() { Castiel.log('Game started'); },
-  update(dt) { /* logic */ }
+<h1>Castiel SDK</h1>
+
+<p>
+Castiel is the simple game scripting SDK for SDSG.
+</p>
+
+<p>
+It exists so you can make games without writing browser
+boilerplate, canvas setup, event listeners, animation loops,
+or giant piles of JavaScript.
+</p>
+
+<div class="note">
+<strong>Castiel 3.0</strong><br>
+Write the game. Castiel handles the boring shit.
+</div>
+
+<div class="toc">
+<strong>Contents</strong>
+
+<ul>
+<li><a href="#basic">The Basic Idea</a></li>
+<li><a href="#game">Game</a></li>
+<li><a href="#objects">Objects</a></li>
+<li><a href="#groups">Groups</a></li>
+<li><a href="#input">Input</a></li>
+<li><a href="#movement">Movement</a></li>
+<li><a href="#timing">Timing</a></li>
+<li><a href="#drawing">Drawing</a></li>
+<li><a href="#collision">Collision</a></li>
+<li><a href="#math">Random Numbers</a></li>
+<li><a href="#images">Images</a></li>
+<li><a href="#audio">Audio</a></li>
+<li><a href="#files">Files</a></li>
+<li><a href="#logging">Logging</a></li>
+<li><a href="#canvas">Canvas Information</a></li>
+<li><a href="#complete">Complete Example</a></li>
+<li><a href="#comparison">What Castiel Handles</a></li>
+</ul>
+</div>
+
+<section id="basic">
+
+<h2>The Basic Idea</h2>
+
+<p>
+A Castiel game normally only needs one file:
+<code>game.js</code>.
+</p>
+
+<pre><code>Castiel.game({
+    init() {
+        this.player =
+            Castiel.rect(
+                300,
+                200,
+                40,
+                40,
+                '#716fee'
+            );
+    },
+
+    update(dt) {
+        Castiel.clear();
+
+        Castiel.move(
+            this.player,
+            200,
+            dt
+        );
+
+        this.player.draw();
+    }
 });</code></pre>
-    <h3>Castiel.start()</h3>
-    <p>Starts the game loop. Usually called automatically on page load in `run.html`.</p>
-  </section>
 
-  <section>
-    <h2>Logging & Debugging</h2>
-    <h3>Castiel.log(msg)</h3>
-    <p>Logs messages to the browser console and, when running inside the desktop app, to the host editor.</p>
-    <pre><code>Castiel.log('Hello Castiel');</code></pre>
+<p>
+You do not need to create the canvas.
+You do not need <code>requestAnimationFrame()</code>.
+You do not need <code>addEventListener()</code>.
+You do not need to create your own keyboard system.
+</p>
 
-    <h3>Castiel.speak(msg)</h3>
-    <p>Internal logging that can forward messages to the host/editor for diagnostics.</p>
-  </section>
+</section>
 
-  <section>
-    <h2>File Operations</h2>
-    <h3>Castiel.createFile(path, content)</h3>
-    <p>Creates or overwrites a file in the project folder. When used in a browser-only environment this typically throws or is a no-op; in the desktop app it communicates with the host.</p>
-    <pre><code>Castiel.createFile('data.txt', 'Hello World');</code></pre>
+<section id="game">
 
-    <h3>Castiel.readFile(path)</h3>
-    <p>Reads a file from the project folder. Returns a string or empty string if not available.</p>
-  </section>
+<h2>Game</h2>
 
-  <section>
-    <h2>Canvas & Drawing Helpers</h2>
-    <ul>
-      <li><strong>Castiel.clear(color='#1e1e1e')</strong> — Clears canvas with background color.</li>
-      <li><strong>Castiel.drawRect(x, y, w, h, color='white')</strong> — Draws a filled rectangle.</li>
-      <li><strong>Castiel.drawImage(img, x, y, w, h)</strong> — Draws an image object.</li>
-      <li><strong>Castiel.loadImage(src, callback)</strong> — Loads an image asynchronously and calls the callback with the loaded image.</li>
-    </ul>
-  </section>
+<h3>Castiel.game(definition)</h3>
 
-  <section>
-    <h2>Input Handling</h2>
-    <ul>
-      <li><strong>Castiel.keyDown(key)</strong> — Returns true if key is pressed.</li>
-      <li><strong>Castiel.mouse()</strong> — Returns <code>{ x, y, down }</code> with mouse state.</li>
-    </ul>
-  </section>
+<p>
+Creates your game definition.
+</p>
 
-  <section>
-    <h2>Audio</h2>
-    <ul>
-      <li><strong>Castiel.loadAudio(src)</strong> — Loads an audio file.</li>
-      <li><strong>Castiel.playSound(audio)</strong> — Plays the loaded audio.</li>
-    </ul>
-  </section>
+<pre><code>Castiel.game({
+    init() {
+        // Runs once.
+    },
 
-  <section>
-    <h2>Sprites & Helpers</h2>
-    <ul>
-      <li><strong>new Castiel.Sprite(img, x, y, w, h)</strong> — Sprite object with draw function.</li>
-      <li><strong>Castiel.rectCollide(a, b)</strong> — Detects collision between two rectangles.</li>
-    </ul>
-  </section>
+    update(dt) {
+        // Runs every frame.
+    },
 
-  <footer>
-    &copy; 2026 Castiel SDK — SDSG Toolkit
-  </footer>
+    destroy() {
+        // Runs when the game stops.
+    }
+});</code></pre>
+
+<h3>dt</h3>
+
+<p>
+<code>dt</code> is the time since the previous frame in
+seconds. Use it for movement so your game does not depend
+on FPS.
+</p>
+
+<pre><code>player.x += 200 * dt;</code></pre>
+
+<h3>Castiel.stop()</h3>
+
+<pre><code>Castiel.stop();</code></pre>
+
+<p>
+Stops the game loop.
+</p>
+
+<h3>Castiel.restart()</h3>
+
+<pre><code>Castiel.restart();</code></pre>
+
+<p>
+Restarts the game by reloading the game page.
+</p>
+
+</section>
+
+<section id="objects">
+
+<h2>Objects</h2>
+
+<h3>Castiel.rect(x, y, width, height, color)</h3>
+
+<p>
+Creates a rectangle game object.
+</p>
+
+<pre><code>player = Castiel.rect(
+    100,
+    100,
+    50,
+    50,
+    'red'
+);</code></pre>
+
+<p>
+Rectangle objects automatically provide:
+</p>
+
+<ul>
+<li><code>x</code></li>
+<li><code>y</code></li>
+<li><code>width</code></li>
+<li><code>height</code></li>
+<li><code>color</code></li>
+<li><code>visible</code></li>
+<li><code>destroyed</code></li>
+<li><code>draw()</code></li>
+<li><code>destroy()</code></li>
+<li><code>touching(other)</code></li>
+<li><code>moveTowards(target, speed, dt)</code></li>
+<li><code>bounds()</code></li>
+</ul>
+
+<h3>Castiel.circle(x, y, radius, color)</h3>
+
+<p>
+Creates a circle game object.
+</p>
+
+<pre><code>ball = Castiel.circle(
+    300,
+    200,
+    25,
+    'blue'
+);</code></pre>
+
+<p>
+Circle objects provide:
+</p>
+
+<ul>
+<li><code>x</code></li>
+<li><code>y</code></li>
+<li><code>radius</code></li>
+<li><code>color</code></li>
+<li><code>visible</code></li>
+<li><code>destroyed</code></li>
+<li><code>draw()</code></li>
+<li><code>destroy()</code></li>
+<li><code>touching(other)</code></li>
+</ul>
+
+<h3>object.draw()</h3>
+
+<pre><code>player.draw();</code></pre>
+
+<p>
+Draws the object if it is visible and has not been destroyed.
+</p>
+
+<h3>object.destroy()</h3>
+
+<pre><code>enemy.destroy();</code></pre>
+
+<p>
+Marks the object as destroyed. Destroyed objects are removed
+from Castiel's internal object list.
+</p>
+
+<h3>object.touching(other)</h3>
+
+<pre><code>if (player.touching(enemy)) {
+    Castiel.restart();
+}</code></pre>
+
+<p>
+Checks whether two supported objects are touching.
+</p>
+
+<h3>object.bounds()</h3>
+
+<pre><code>const bounds = player.bounds();
+
+console.log(bounds.x);
+console.log(bounds.y);
+console.log(bounds.width);
+console.log(bounds.height);</code></pre>
+
+<p>
+Returns the object's rectangular bounds.
+</p>
+
+</section>
+
+<section id="groups">
+
+<h2>Groups</h2>
+
+<p>
+Use groups instead of manually maintaining arrays of game
+objects.
+</p>
+
+<pre><code>enemies = Castiel.group();
+
+enemies.add(
+    Castiel.rect(
+        100,
+        50,
+        40,
+        40,
+        'green'
+    )
+);
+
+enemies.each(enemy => {
+    enemy.moveTowards(
+        player,
+        100,
+        dt
+    );
+});</code></pre>
+
+<h3>group.add(object)</h3>
+
+<p>
+Adds an object to the group.
+</p>
+
+<h3>group.remove(object)</h3>
+
+<p>
+Removes an object from the group.
+</p>
+
+<h3>group.clear()</h3>
+
+<p>
+Destroys everything in the group and empties it.
+</p>
+
+<h3>group.each(callback)</h3>
+
+<p>
+Runs the callback for every living object.
+</p>
+
+<pre><code>enemies.each(enemy => {
+    enemy.draw();
+});</code></pre>
+
+<h3>group.length</h3>
+
+<pre><code>console.log(enemies.length);</code></pre>
+
+<p>
+Returns the number of objects currently stored in the group.
+</p>
+
+<h3>group.all</h3>
+
+<pre><code>const objects = enemies.all;</code></pre>
+
+<p>
+Returns the group's internal object array.
+</p>
+
+</section>
+
+<section id="input">
+
+<h2>Input</h2>
+
+<h3>Castiel.key(key)</h3>
+
+<p>
+Returns <code>true</code> while a key is held.
+</p>
+
+<pre><code>if (Castiel.key('ArrowLeft')) {
+    player.x -= 200 * dt;
+}</code></pre>
+
+<p>
+Both keyboard names and keyboard codes are supported.
+</p>
+
+<h3>Common Keys</h3>
+
+<pre><code>ArrowUp
+ArrowDown
+ArrowLeft
+ArrowRight
+
+Space
+Enter
+Escape
+Tab
+
+KeyW
+KeyA
+KeyS
+KeyD
+
+KeyE
+KeyF
+KeyR
+
+Shift
+Control
+Alt</code></pre>
+
+<h3>Castiel.keyPressed(key)</h3>
+
+<p>
+Returns <code>true</code> for one frame when a key is pressed.
+</p>
+
+<pre><code>if (Castiel.keyPressed('Space')) {
+    shoot();
+}</code></pre>
+
+<h3>Castiel.keyReleased(key)</h3>
+
+<p>
+Returns <code>true</code> for one frame when a key is released.
+</p>
+
+<pre><code>if (Castiel.keyReleased('Space')) {
+    Castiel.log('Released!');
+}</code></pre>
+
+<h3>Castiel.mouse()</h3>
+
+<pre><code>const mouse = Castiel.mouse();
+
+mouse.x
+mouse.y
+mouse.down
+mouse.pressed
+mouse.released
+mouse.button</code></pre>
+
+<p>
+Mouse coordinates are relative to the game canvas.
+</p>
+
+<h3>Mouse Buttons</h3>
+
+<pre><code>0 = Left
+1 = Middle
+2 = Right</code></pre>
+
+</section>
+
+<section id="movement">
+
+<h2>Movement</h2>
+
+<h3>Castiel.move(object, speed, dt)</h3>
+
+<p>
+Uses WASD and arrow keys to move an object.
+</p>
+
+<pre><code>Castiel.move(
+    player,
+    200,
+    dt
+);</code></pre>
+
+<p>
+This replaces manually checking four keyboard keys.
+</p>
+
+<h3>Castiel.moveTowards(object, target, speed, dt)</h3>
+
+<pre><code>Castiel.moveTowards(
+    enemy,
+    player,
+    100,
+    dt
+);</code></pre>
+
+<p>
+Objects also expose this directly:
+</p>
+
+<pre><code>enemy.moveTowards(
+    player,
+    100,
+    dt
+);</code></pre>
+
+</section>
+
+<section id="timing">
+
+<h2>Timing</h2>
+
+<h3>Castiel.every(seconds, callback)</h3>
+
+<p>
+Runs a callback repeatedly at the specified interval.
+</p>
+
+<pre><code>Castiel.every(1, () => {
+    spawnEnemy();
+});</code></pre>
+
+<p>
+The returned timer can be stopped.
+</p>
+
+<pre><code>const timer =
+    Castiel.every(1, () => {
+        spawnEnemy();
+    });
+
+timer.stop();</code></pre>
+
+<h3>Castiel.after(seconds, callback)</h3>
+
+<p>
+Runs a callback after a delay.
+</p>
+
+<pre><code>Castiel.after(2, () => {
+    Castiel.log('Two seconds passed.');
+});</code></pre>
+
+</section>
+
+<section id="drawing">
+
+<h2>Drawing</h2>
+
+<h3>Castiel.clear(color)</h3>
+
+<pre><code>Castiel.clear();
+
+Castiel.clear('black');
+
+Castiel.clear('#716fee');</code></pre>
+
+<p>
+Clears the entire canvas using the specified color.
+</p>
+
+<h3>Castiel.drawRect(x, y, width, height, color)</h3>
+
+<pre><code>Castiel.drawRect(
+    100,
+    100,
+    50,
+    50,
+    'red'
+);</code></pre>
+
+<h3>Castiel.drawCircle(x, y, radius, color)</h3>
+
+<pre><code>Castiel.drawCircle(
+    100,
+    100,
+    25,
+    'blue'
+);</code></pre>
+
+<h3>Castiel.text(text, x, y, size, color)</h3>
+
+<pre><code>Castiel.text(
+    'Score: 100',
+    20,
+    30,
+    20,
+    'white'
+);</code></pre>
+
+<p>
+Text uses the Consolas font.
+</p>
+
+</section>
+
+<section id="collision">
+
+<h2>Collision</h2>
+
+<h3>Castiel.rectCollide(a, b)</h3>
+
+<pre><code>if (Castiel.rectCollide(
+    player,
+    enemy
+)) {
+    enemy.destroy();
+}</code></pre>
+
+<p>
+Performs rectangle-to-rectangle collision detection.
+</p>
+
+<h3>object.touching(other)</h3>
+
+<p>
+For normal objects, this is usually simpler:
+</p>
+
+<pre><code>if (player.touching(enemy)) {
+    enemy.destroy();
+}</code></pre>
+
+<h3>Castiel.pointInRect(x, y, rect)</h3>
+
+<pre><code>const mouse = Castiel.mouse();
+
+if (
+    Castiel.pointInRect(
+        mouse.x,
+        mouse.y,
+        button
+    )
+) {
+    Castiel.log('Clicked button');
+}</code></pre>
+
+</section>
+
+<section id="math">
+
+<h2>Random Numbers</h2>
+
+<h3>Castiel.random(min, max)</h3>
+
+<p>
+Returns a random decimal number between the specified values.
+</p>
+
+<pre><code>const x =
+    Castiel.random(
+        0,
+        Castiel.width()
+    );</code></pre>
+
+<h3>Castiel.randomInt(min, max)</h3>
+
+<p>
+Returns a random integer between the specified values,
+including both endpoints.
+</p>
+
+<pre><code>const enemyCount =
+    Castiel.randomInt(3, 10);</code></pre>
+
+</section>
+
+<section id="images">
+
+<h2>Images</h2>
+
+<h3>Castiel.image(src)</h3>
+
+<p>
+Creates an image immediately.
+</p>
+
+<pre><code>const playerImage =
+    Castiel.image(
+        'player.png'
+    );</code></pre>
+
+<h3>Castiel.loadImage(src)</h3>
+
+<p>
+Loads an image asynchronously and resolves when it is ready.
+</p>
+
+<pre><code>let playerImage;
+
+async init() {
+    playerImage =
+        await Castiel.loadImage(
+            'player.png'
+        );
+}</code></pre>
+
+<h3>Castiel.drawImage(image, x, y)</h3>
+
+<pre><code>Castiel.drawImage(
+    playerImage,
+    100,
+    100
+);</code></pre>
+
+<h3>Castiel.drawImage(image, x, y, width, height)</h3>
+
+<pre><code>Castiel.drawImage(
+    playerImage,
+    100,
+    100,
+    64,
+    64
+);</code></pre>
+
+</section>
+
+<section id="audio">
+
+<h2>Audio</h2>
+
+<h3>Castiel.sound(src)</h3>
+
+<p>
+Creates a sound object.
+</p>
+
+<pre><code>shootSound =
+    Castiel.sound(
+        'shoot.wav'
+    );</code></pre>
+
+<h3>sound.play(volume)</h3>
+
+<p>
+Plays the sound from the beginning.
+Volume ranges from <code>0</code> to <code>1</code>.
+</p>
+
+<pre><code>shootSound.play();
+
+shootSound.play(0.5);</code></pre>
+
+<h3>sound.stop()</h3>
+
+<pre><code>shootSound.stop();</code></pre>
+
+<p>
+Stops the sound and resets it to the beginning.
+</p>
+
+<h3>sound.pause()</h3>
+
+<pre><code>shootSound.pause();</code></pre>
+
+<p>
+Pauses the sound without resetting its position.
+</p>
+
+</section>
+
+<section id="files">
+
+<h2>Files</h2>
+
+<p>
+Castiel can communicate with the desktop host for simple
+file operations when the game is running inside the Castiel
+editor.
+</p>
+
+<div class="warning">
+<strong>Important:</strong>
+Host file access depends on the Castiel desktop host.
+A normal browser cannot provide these operations.
+</div>
+
+<h3>Castiel.write(path, content)</h3>
+
+<pre><code>Castiel.write(
+    'save.txt',
+    'score=100'
+);</code></pre>
+
+<p>
+Writes text through the Castiel desktop host.
+</p>
+
+<h3>Castiel.read(path)</h3>
+
+<pre><code>const save =
+    Castiel.read(
+        'save.txt'
+    );</code></pre>
+
+<p>
+Reads text through the Castiel desktop host.
+</p>
+
+</section>
+
+<section id="logging">
+
+<h2>Logging</h2>
+
+<h3>Castiel.log(message)</h3>
+
+<pre><code>Castiel.log(
+    'Enemy spawned'
+);</code></pre>
+
+<p>
+Writes a normal Castiel message to the browser console
+and sends it to the desktop host when available.
+</p>
+
+<h3>Castiel.error(message)</h3>
+
+<pre><code>Castiel.error(
+    'Could not load level'
+);</code></pre>
+
+<p>
+Writes an error message to the console and reports it to the
+desktop host when available.
+</p>
+
+</section>
+
+<section id="canvas">
+
+<h2>Canvas Information</h2>
+
+<h3>Castiel.width()</h3>
+
+<pre><code>const center =
+    Castiel.width() / 2;</code></pre>
+
+<p>
+Returns the current logical width of the game canvas.
+</p>
+
+<h3>Castiel.height()</h3>
+
+<pre><code>const center =
+    Castiel.height() / 2;</code></pre>
+
+<p>
+Returns the current logical height of the game canvas.
+</p>
+
+</section>
+
+<section id="complete">
+
+<h2>Complete Example</h2>
+
+<p>
+This is intentionally small. You should not need hundreds
+of lines for a simple SDSG game.
+</p>
+
+<pre><code>Castiel.game({
+    init() {
+        this.player =
+            Castiel.rect(
+                300,
+                400,
+                40,
+                40,
+                'red'
+            );
+
+        this.enemies =
+            Castiel.group();
+
+        Castiel.every(1, () => {
+            this.enemies.add(
+                Castiel.rect(
+                    Castiel.random(
+                        0,
+                        Castiel.width() - 40
+                    ),
+                    0,
+                    40,
+                    40,
+                    'green'
+                )
+            );
+        });
+    },
+
+    update(dt) {
+        Castiel.clear();
+
+        Castiel.move(
+            this.player,
+            250,
+            dt
+        );
+
+        this.player.draw();
+
+        this.enemies.each(enemy => {
+            enemy.moveTowards(
+                this.player,
+                100,
+                dt
+            );
+
+            enemy.draw();
+
+            if (
+                enemy.touching(
+                    this.player
+                )
+            ) {
+                Castiel.restart();
+            }
+        });
+    }
+});</code></pre>
+
+</section>
+
+<section id="comparison">
+
+<h2>What Castiel Handles For You</h2>
+
+<table>
+<tr>
+<th>Without Castiel</th>
+<th>With Castiel</th>
+</tr>
+
+<tr>
+<td>getElementById()</td>
+<td>Castiel objects</td>
+</tr>
+
+<tr>
+<td>getContext('2d')</td>
+<td>Castiel.drawRect()</td>
+</tr>
+
+<tr>
+<td>requestAnimationFrame()</td>
+<td>update(dt)</td>
+</tr>
+
+<tr>
+<td>keydown listeners</td>
+<td>Castiel.key()</td>
+</tr>
+
+<tr>
+<td>keyup listeners</td>
+<td>Castiel.keyReleased()</td>
+</tr>
+
+<tr>
+<td>manual object arrays</td>
+<td>Castiel.group()</td>
+</tr>
+
+<tr>
+<td>setInterval()</td>
+<td>Castiel.every()</td>
+</tr>
+
+<tr>
+<td>Math.random()</td>
+<td>Castiel.random()</td>
+</tr>
+
+<tr>
+<td>manual collision math</td>
+<td>object.touching()</td>
+</tr>
+
+<tr>
+<td>manual movement math</td>
+<td>Castiel.move()</td>
+</tr>
+
+<tr>
+<td>Image loading boilerplate</td>
+<td>Castiel.loadImage()</td>
+</tr>
+
+<tr>
+<td>Audio element management</td>
+<td>Castiel.sound()</td>
+</tr>
+
+<tr>
+<td>Desktop file bridge</td>
+<td>Castiel.read() / Castiel.write()</td>
+</tr>
+
+<tr>
+<td>Canvas dimensions</td>
+<td>Castiel.width() / Castiel.height()</td>
+</tr>
+</table>
+
+<div class="note">
+<strong>Rule:</strong>
+If you find yourself writing browser boilerplate inside a
+Castiel game, check the SDK first. Castiel probably already
+has a simpler way to do it.
+</div>
+
+</section>
+
+<footer>
+Castiel SDK 3.0.0 — SDSG Toolkit
+</footer>
+
+</main>
 </body>
 </html>

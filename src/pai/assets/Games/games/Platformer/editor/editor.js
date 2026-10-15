@@ -31,4 +31,4 @@ nx=snap(nx);ny=snap(ny);nw=snap(nw);nh=snap(nh);selected.x=nx;selected.y=ny;sele
 function hideHUD(){hud.style.display='none'}
 if(snapToggle){snapToGrid=snapToggle.checked}
 if(gridInput){gridSize=parseInt(gridInput.value,10)||gridSize}
-document.getElementById('downloadLevel').onclick=()=>{console.log("Copy this output and save it as level.js:");console.log(`const levels = ${JSON.stringify(allLevels, null, 2)};`);alert("Level data printed to console! Open DevTools to copy.")};draw()
+document.getElementById('downloadLevel').onclick=()=>{alert("Level data printed to console! Open DevTools to copy.")};draw()

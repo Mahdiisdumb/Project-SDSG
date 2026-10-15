@@ -13,4 +13,4 @@ function endGame(){alert("Game Over (Reload Page)");location.reload()}
 function checkGameOver(){if(!players[0].alive&&!players[1].alive){endGame()}}
 function spawnGiantEnemy(){if(!giantEnemy){const enemyWidth=100;const enemyHeight=100;const x=Math.random()*(canvas.width-enemyWidth);const speed=1;giantEnemy={x,y:0,width:enemyWidth,height:enemyHeight,speed,health:GIANT_ENEMY_HEALTH}}}
 function update(){ctx.clearRect(0,0,canvas.width,canvas.height);players.forEach(player=>{if(player.invincible){player.invincibleTime-=16;if(player.invincibleTime<=0){player.invincible=!1}}});players.forEach(drawPlayer);drawHighScore();players.forEach(player=>drawBullets(player));drawGiantEnemy();players.forEach(movePlayer);checkPlayerRevival();checkGameOver();requestAnimationFrame(update)}
-document.addEventListener('keydown',(e)=>{keys[e.key]=!0;players.forEach((player)=>{if(e.key===player.controls.shoot){shoot(player)}})});document.addEventListener('keyup',(e)=>{keys[e.key]=!1});giantEnemyImage.onload=()=>{spawnGiantEnemy();update()};giantEnemyImage.onerror=()=>{console.error("Error loading giant enemy image.")}
+giantEnemyImage.onerror=()=>{}

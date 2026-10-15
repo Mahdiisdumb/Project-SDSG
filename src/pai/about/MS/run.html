@@ -1,1 +1,94 @@
-<!DOCTYPE html><html lang="en"><head><link rel="icon" type="image/x-icon" href="./favicon.ico"><link href="favicon.ico" rel="icon" /><meta charset="UTF-8"><base href="https://mahdi-studios.up.railway.app/"><title>Mahdi Studios About</title><style> html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; } iframe { border: none; width: 100vw; height: 100vh; display: block; } </style></head><body><iframe src="index.html"></iframe></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahdi Studios - Dumb Ideas, Full Chaos</title>
+    <meta name="description" content="Mahdi Studios - indie chaos, experiments, broken code, and stubborn 12-13-year-old energy.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">Mahdi<span>Studios</span></div>
+            <div>
+                <a href="#projects">Broken Stuff</a>
+                <a href="#about">Bad Decisions</a>
+                <a href="#contact">Yell At Us</a>
+            </div>
+        </nav>
+
+        <div class="hero" style="display: grid; grid-template-columns: 1fr 120px; gap: 2rem; align-items: center;">
+            <div>
+                <img src="hero.png" alt="Mahdi Studios Logo" style="max-width: 220px; margin-bottom: 1.5rem;">
+                <h1>Mahdi Studios - Where 12-13-Year-Old Stubbornness Turns Ideas into Spaghetti. See Project SDSG for Proof.</h1>
+                <p>At Mahdi Studios we believe: if there's a will, there is most definitely a way. Is it the right way? Absolutely not.</p>
+                <a class="cta" href="#projects">Witness the chaos</a>
+            </div>
+            <div style="text-align: center;">
+                <img id="gh-avatar" alt="Mahdi GitHub Avatar" style="width: 96px; height: 96px; border-radius: 50%; border: 2px solid var(--accent);" />
+                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted);">
+                    Mahdi (Head Dumbass & Chief Chaos Officer)
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="projects">
+        <h2>Projects & Disasters</h2>
+        <p style="color: var(--muted); max-width: 720px;">
+            Stuff we've made, broken, or accidentally shipped. Live data pulled from Mahdiisdumb GitHub.
+        </p>
+        <div id="repo-grid" class="grid"></div>
+    </section>
+
+    <section id="about">
+        <h2>About Mahdi Studios (Lower Your Expectations)</h2>
+        <p>Mahdi Studios is run by Mahdi and other equally confused 12-13-year-olds. None of us know what we're doing.</p>
+
+        <div class="divisions">
+            <div class="division">
+                <img src="Unity.png" alt="Unity Division" onclick="showDivision('Unity')">
+                <div>Unity Division</div>
+            </div>
+            <div class="division">
+                <img src="Tools.png" alt="Tools Division" onclick="showDivision('Tools')">
+                <div>Tools Division</div>
+            </div>
+            <div class="division">
+                <img src="Web.png" alt="Web Division" onclick="showDivision('Web')">
+                <div>Web Division</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact / Complain / Cry</h2>
+        <p>
+            Reach out if you dare: <br>
+            mahdihamade6789010@outlook.com <br>
+            mahdihamade77@gmail.com <br>
+            Discord: 'mahdiisdumb.' <br>
+        </p>
+    </section>
+
+    <footer>
+        <span id="year"></span> Mahdi Studios - built by dumbasses, powered by sunlight, stubbornness, and teenage chaos.
+    </footer>
+
+    <!-- Division Modal -->
+    <div id="divisionModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">×</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <p class="employees" id="modal-employees"></p>
+            <p class="volunteers" id="modal-volunteers"></p>
+            <p class="retired" id="modal-retired"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

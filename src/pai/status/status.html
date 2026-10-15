@@ -1,61 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0d16">
+    <meta name="description" content="Project SDSG system status, availability, compatibility, and functionality.">
+
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Project SDSG Status</title>
-    
+
+    <title>Project SDSG — System Status</title>
+
     <style>
-:root{--bg:#0f1720;--panel:#161b22;--card:#111827;--accent:#58a6ff;--accent-2:#f78166;--ok:#16a34a;--muted:#94a3b8;--soft:#79c0ff}html,body{margin:0;padding:0;height:100%;font-family:system-ui,-apple-system,'Courier New',Segoe UI,Roboto,monospace;background-color:var(--bg);color:var(--muted);display:flex;align-items:center;justify-content:center;overflow:hidden;user-select:none}@media (prefers-reduced-motion:reduce){.container,button,h1,h2,h3,pre,code,body::before,body::after{animation:none!important;transition:none!important}}.container,.card{max-width:900px;width:100%;padding:30px;text-align:center;background-color:var(--card);border-radius:12px;border:1px solid #21262d;backdrop-filter:blur(4px);position:relative;z-index:1;box-shadow:0 6px 30px rgb(0 0 0 / .6);transform:translateZ(0);will-change:transform,opacity;overflow:visible}.container::after{content:"";position:absolute;inset:-18px;border-radius:16px;pointer-events:none;background:radial-gradient(closest-side,rgb(88 166 255 / .12),transparent 50%);z-index:-1;opacity:.9;transform:translateZ(0);will-change:opacity,transform;animation:pulse 6s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:.5;transform:scale(1.02)}}.card{background:linear-gradient(180deg,rgb(255 255 255 / .02),transparent),var(--card);box-shadow:0 8px 30px rgb(2 6 23 / .7);border:1px solid rgb(255 255 255 / .03);padding:20px}@keyframes glitchBox{0%{transform:translateY(0) translateX(0)}25%{transform:translateY(-1px) translateX(1px)}50%{transform:translateY(1px) translateX(-1px)}75%{transform:translateY(-.5px) translateX(.5px)}100%{transform:translateY(0) translateX(0)}}.container{animation:glitchBox 8s infinite ease-in-out}h1,h2,h3{color:var(--accent-2);font-family:'Orbitron',sans-serif;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;position:relative}h1::after,h2::after,h3::after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-6px;width:60%;height:6px;background:radial-gradient(ellipse at center,rgb(247 129 102 / .14),transparent 60%);filter:blur(6px);opacity:.85;will-change:opacity;animation:headingPulse 7.5s ease-in-out infinite}@keyframes headingPulse{0%,100%{opacity:.9}50%{opacity:.5}}button{background:var(--panel);color:var(--accent);border:2px dashed var(--accent);padding:12px 24px;font-size:16px;font-weight:700;letter-spacing:1px;border-radius:6px;text-transform:uppercase;cursor:pointer;transition:transform 220ms cubic-bezier(.2,.9,.2,1),box-shadow 220ms ease,color 220ms ease;box-shadow:0 0 8px rgb(88 166 255 / .12);outline:none}button:hover{transform:scale(1.06);background-color:var(--accent);color:var(--bg);box-shadow:0 0 18px rgb(88 166 255 / .25)}a{color:#a5d6ff;text-decoration:none;transition:color 200ms ease,text-shadow 200ms ease;font-weight:700}a:hover{color:var(--accent);text-shadow:0 0 6px rgb(88 166 255 / .12)}pre,code{background-color:var(--bg);color:var(--soft);padding:12px;border-radius:6px;font-size:14px;overflow-x:auto;border-left:4px solid var(--accent-2);box-shadow:inset 0 0 8px rgb(22 27 34 / .6);text-align:left}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace;background:rgb(255 255 255 / .02);padding:6px;border-radius:6px}body::after{content:"SD-SG // UNBLOCKED // CHAOS ENGINE // GAMER SANCTUARY // CODE IS FREEDOM // BETA BUILD";position:absolute;bottom:12px;right:12px;font-size:10px;color:#21262d;letter-spacing:1px;font-family:'Courier New',Courier,monospace;opacity:.75}body::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgb(255 255 255 / .01) 3px);pointer-events:none;z-index:0;transform:translateZ(0);will-change:transform,opacity;opacity:.18;animation:overlayFloat 12s linear infinite}@keyframes overlayFloat{0%{transform:translateY(0);opacity:.18}50%{transform:translateY(3px);opacity:.14}100%{transform:translateY(0);opacity:.18}}.container img,.container iframe{max-width:100%;height:auto;display:block;margin:0 auto 12px}#buttonsContainer{max-height:60vh;overflow-y:auto;padding:10px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:20px}.badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-weight:700;font-size:13px}.ok{background:#062f1b;color:var(--ok);border:1px solid rgb(22 163 74 / .12)}.warn{background:#2b1b09;color:#f59e0b}dl{display:grid;grid-template-columns:1fr auto;gap:10px 18px;align-items:center}dt{color:#cfe9ff;font-weight:600}dd{margin:0;color:var(--muted)}p.lead{margin:0 0 14px;color:var(--muted)}
-</style>
+        :root {
+            color-scheme: dark;
+
+            --bg: #0b0d16;
+            --panel: #111522;
+            --panel-hover: #171d2d;
+            --border: #262c40;
+
+            --accent: #716fee;
+            --accent-bright: #9694ff;
+            --blue: #79c0ff;
+
+            --text: #e6e9f2;
+            --muted: #929bb2;
+
+            --green: #4ade80;
+            --green-bg: #102b20;
+
+            --yellow: #fbbf24;
+            --yellow-bg: #302713;
+
+            --radius: 14px;
+            --content-width: 920px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 48px 20px 76px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow-x: hidden;
+
+            background:
+                radial-gradient(
+                    ellipse at 50% 0%,
+                    rgb(113 111 238 / 14%),
+                    transparent 55%
+                ),
+                var(--bg);
+
+            color: var(--text);
+            font-family:
+                "Segoe UI",
+                system-ui,
+                -apple-system,
+                sans-serif;
+
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+
+            background:
+                linear-gradient(
+                    rgb(255 255 255 / 1.2%) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgb(255 255 255 / 1.2%) 1px,
+                    transparent 1px
+                );
+
+            background-size: 36px 36px;
+
+            mask-image: linear-gradient(
+                to bottom,
+                black,
+                transparent 85%
+            );
+        }
+
+        a {
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: white;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--accent-bright);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: var(--content-width);
+            min-width: 0;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            background: rgb(17 21 34 / 94%);
+
+            box-shadow:
+                0 24px 80px rgb(0 0 0 / 35%),
+                0 0 50px rgb(113 111 238 / 5%);
+
+            overflow: hidden;
+
+            animation: appear 450ms ease-out both;
+        }
+
+        .header {
+            position: relative;
+            padding: 34px 36px 30px;
+
+            border-bottom: 1px solid var(--border);
+
+            background:
+                linear-gradient(
+                    120deg,
+                    rgb(113 111 238 / 12%),
+                    transparent 65%
+                );
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+
+            background: linear-gradient(
+                90deg,
+                var(--accent),
+                var(--blue),
+                transparent
+            );
+        }
+
+        .eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            margin: 0 0 12px;
+
+            color: var(--accent-bright);
+            font: 700 11px/1.4 Consolas, monospace;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            flex-shrink: 0;
+
+            border-radius: 2px;
+            background: var(--accent);
+            box-shadow: 0 0 12px rgb(113 111 238 / 65%);
+        }
+
+        h1, h2, p {
+            margin-top: 0;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+
+            color: var(--text);
+            font-size: clamp(25px, 5vw, 36px);
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            max-width: 600px;
+            margin-bottom: 0;
+
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .overview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+
+            padding: 24px 36px 0;
+        }
+
+        .overview-card {
+            min-width: 0;
+            padding: 18px 20px;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            background: var(--panel);
+        }
+
+        .overview-label {
+            display: block;
+            margin-bottom: 7px;
+
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .overview-value {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: var(--green);
+            font-size: 19px;
+            font-weight: 750;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            flex-shrink: 0;
+
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 12px currentColor;
+        }
+
+        .section {
+            padding: 28px 36px 0;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 14px;
+
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 750;
+            letter-spacing: .3px;
+        }
+
+        .section-heading::before {
+            content: "";
+            width: 3px;
+            height: 17px;
+            flex-shrink: 0;
+
+            border-radius: 3px;
+            background: var(--accent);
+        }
+
+        .status-list {
+            margin: 0;
+            padding: 0;
+
+            list-style: none;
+
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            overflow: hidden;
+        }
+
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+
+            min-height: 54px;
+            padding: 12px 17px;
+
+            background: var(--panel);
+
+            transition:
+                background-color 160ms ease,
+                border-color 160ms ease;
+        }
+
+        .status-row + .status-row {
+            border-top: 1px solid var(--border);
+        }
+
+        .status-row:hover {
+            background: var(--panel-hover);
+        }
+
+        .status-label {
+            min-width: 0;
+
+            color: #c5ccdd;
+            font-size: 13px;
+            font-weight: 550;
+        }
+
+        .badge {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+
+            flex-shrink: 0;
+            max-width: 60%;
+
+            padding: 5px 10px;
+
+            border: 1px solid transparent;
+            border-radius: 7px;
+
+            font-size: 11px;
+            font-weight: 750;
+            line-height: 1.4;
+            text-align: center;
+        }
+
+        .badge::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            flex-shrink: 0;
+
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .badge.ok {
+            color: var(--green);
+            border-color: rgb(74 222 128 / 14%);
+            background: var(--green-bg);
+        }
+
+        .badge.warn {
+            color: var(--yellow);
+            border-color: rgb(251 191 36 / 16%);
+            background: var(--yellow-bg);
+        }
+
+        .badge.neutral {
+            color: var(--blue);
+            border-color: rgb(121 192 255 / 14%);
+            background: #132436;
+        }
+
+        .platforms {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .platform {
+            padding: 7px 11px;
+
+            border: 1px solid var(--border);
+            border-radius: 8px;
+
+            background: var(--panel);
+            color: #cbd3e6;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+
+            margin-top: 30px;
+            padding: 19px 36px;
+
+            border-top: 1px solid var(--border);
+
+            color: var(--muted);
+            background: rgb(0 0 0 / 10%);
+
+            font-size: 11px;
+        }
+
+        .footer-brand {
+            color: var(--accent-bright);
+            font-family: Consolas, monospace;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .footer-note {
+            text-align: right;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px 40px;
+                align-items: flex-start;
+            }
+
+            .dashboard {
+                border-radius: 14px;
+            }
+
+            .header {
+                padding: 27px 21px 24px;
+            }
+
+            .overview {
+                padding: 18px 18px 0;
+                gap: 9px;
+            }
+
+            .overview-card {
+                padding: 14px 12px;
+            }
+
+            .overview-value {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 25px 18px 0;
+            }
+
+            .status-row {
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .status-label {
+                font-size: 12px;
+            }
+
+            .badge {
+                padding: 5px 7px;
+                font-size: 10px;
+            }
+
+            .footer {
+                padding: 18px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .overview {
+                grid-template-columns: 1fr;
+            }
+
+            .status-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .badge {
+                max-width: 100%;
+            }
+
+            .footer-note {
+                text-align: left;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <article class="card" role="main" aria-labelledby="status-title">
-        <header>
-            <h1 id="status-title">Project SDSG Status</h1>
-            <p class="lead">Current health snapshot for the local build and core checks.</p>
+    <main class="dashboard">
+        <header class="header">
+            <p class="eyebrow">SDSG SYSTEM MONITOR</p>
+
+            <h1>Project SDSG</h1>
+
+            <p class="subtitle">
+                System status, compatibility, and functionality overview.
+            </p>
         </header>
-        <section aria-labelledby="summary">
-            <h2 id="summary" style="display:none">Summary</h2>
-            <dl aria-live="polite">
-                <dt>Overall status</dt>
-                <dd><span class="badge ok">Working</span></dd>
-                <dt>Unbanned</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Offline support</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Code functioning</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Finished with update</dt>
-                <dd class="mono">yes</dd>
-                <dt>Has been a month</dt>
-                <dd class="mono">yes</dd>
-                <dt>Code working as expected</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>HTML not buggy</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>UI working</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Working</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>SPBOE Unblocked</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Offline</dt>
-                <dd class="mono">Yes</dd>
-                <dt>Works with online</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Is free</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-                <dt>Supported platforms</dt>
-                <dd class="mono">Windows, Linux, Unix-like, macOS, ChromeOS</dd>
-                <dt>Everything in general works</dt>
-                <dd><span class="badge ok">Yes</span></dd>
-            </dl>
+
+        <section class="overview" aria-label="System overview">
+            <div class="overview-card">
+                <span class="overview-label">Overall status</span>
+
+                <div class="overview-value">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    Operational
+                </div>
+            </div>
+
+            <div class="overview-card">
+                <span class="overview-label">Access status</span>
+
+                <div class="overview-value">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    Unbanned
+                </div>
+            </div>
         </section>
-        <footer>
+
+        <section class="section" aria-labelledby="core-heading">
+            <h2 class="section-heading" id="core-heading">
+                Core functionality
+            </h2>
+
+            <ul class="status-list">
+                <li class="status-row">
+                    <span class="status-label">Core code</span>
+                    <span class="badge ok">Working</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">Code behaving as expected</span>
+                    <span class="badge ok">Yes</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">HTML interface</span>
+                    <span class="badge ok">Working</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">User interface</span>
+                    <span class="badge ok">Working</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">Update completed</span>
+                    <span class="badge ok">Yes</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" aria-labelledby="availability-heading">
+            <h2 class="section-heading" id="availability-heading">
+                Availability and access
+            </h2>
+
+            <ul class="status-list">
+                <li class="status-row">
+                    <span class="status-label">Offline support</span>
+                    <span class="badge ok">Supported</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">Fully functional offline</span>
+                    <span class="badge warn">Partial</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">Online functionality</span>
+                    <span class="badge ok">Supported</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">Free to use</span>
+                    <span class="badge ok">Yes</span>
+                </li>
+
+                <li class="status-row">
+                    <span class="status-label">SPBOE access</span>
+                    <span class="badge ok">Unblocked</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="section" aria-labelledby="platforms-heading">
+            <h2 class="section-heading" id="platforms-heading">
+                Supported platforms
+            </h2>
+
+            <div class="platforms" aria-label="Supported platforms">
+                <span class="platform">Windows</span>
+                <span class="platform">Linux</span>
+                <span class="platform">Unix-like</span>
+                <span class="platform">macOS</span>
+                <span class="platform">ChromeOS</span>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <span class="footer-brand">PROJECT SDSG</span>
+
+            <span class="footer-note">
+                Status information is manually maintained.
+            </span>
         </footer>
-    </article>
+    </main>
 </body>
 </html>

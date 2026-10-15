@@ -1,13 +1,116 @@
-const canvas=document.getElementById('gameCanvas');const ctx=canvas.getContext('2d');const player={x:50,y:300,width:40,height:40,dx:0,dy:0,speed:2,gravity:0.5,jumpPower:-10,onGround:!1};const keys={right:!1,left:!1,up:!1};let level=0;function drawPlayer(){ctx.fillStyle='white';ctx.fillRect(player.x,player.y,player.width,player.height)}
-function drawPlatforms(){levels[level].forEach(p=>{if(p.type==='spike'){ctx.fillStyle='red'}else{ctx.fillStyle='black'}
-ctx.fillRect(p.x,p.y,p.width,p.height)})}
-function updatePlayer(){player.dx=0;if(keys.right)player.dx=player.speed;if(keys.left)player.dx=-player.speed;player.x+=player.dx;if(keys.up&&player.onGround){player.dy=player.jumpPower;player.onGround=!1}
-player.dy+=player.gravity;const nextY=player.y+player.dy;let landed=!1;levels[level].forEach(p=>{if(!p.type){const playerLeft=player.x;const playerRight=player.x+player.width;const playerBottomNext=nextY+player.height;const platformLeft=p.x;const platformRight=p.x+p.width;const platformTop=p.y;if(playerRight>platformLeft&&playerLeft<platformRight){if(player.y+player.height<=platformTop&&playerBottomNext>=platformTop){player.dy=platformTop-player.y-player.height;landed=!0}}}
-if(p.type){const playerLeft=player.x;const playerRight=player.x+player.width;const playerTop=player.y;const playerBottom=player.y+player.height;const spikeLeft=p.x;const spikeRight=p.x+p.width;const spikeTop=p.y;const spikeBottom=p.y+p.height;if(playerRight>spikeLeft&&playerLeft<spikeRight&&playerBottom>spikeTop&&playerTop<spikeBottom){resetPlayer()}}});player.y+=player.dy;player.onGround=landed;if(player.y+player.height>canvas.height){player.y=canvas.height-player.height;player.dy=0;player.onGround=!0}
-if(player.x>canvas.width){player.x=0;level=(level+1)%levels.length}else if(player.x<0){player.x=canvas.width-player.width;level=(level-1+levels.length)%levels.length}}
-function checkCollisions(){player.onGround=!1;levels[level].forEach(p=>{if(!p.type){const nextY=player.y+player.dy;const nextBottom=nextY+player.height;const platformTop=p.y;const platformBottom=p.y+p.height;const playerLeft=player.x;const playerRight=player.x+player.width;const platformLeft=p.x;const platformRight=p.x+p.width;const horizontalOverlap=playerRight>platformLeft&&playerLeft<platformRight;if(horizontalOverlap&&player.y+player.height<=platformTop&&nextBottom>=platformTop){player.dy=0;player.y=platformTop-player.height;player.onGround=!0}}
-if(p.type==='spike'){const playerLeft=player.x;const playerRight=player.x+player.width;const playerTop=player.y;const playerBottom=player.y+player.height;const spikeLeft=p.x;const spikeRight=p.x+p.width;const spikeTop=p.y;const spikeBottom=p.y+p.height;if(playerRight>spikeLeft&&playerLeft<spikeRight&&playerBottom>spikeTop&&playerTop<spikeBottom){resetPlayer()}}});if(player.y+player.height>canvas.height){player.y=canvas.height-player.height;player.dy=0;player.onGround=!0}}
-function resetPlayer(){player.x=50;player.y=300;player.dx=0;player.dy=0;level=0}
-function clearCanvas(){ctx.clearRect(0,0,canvas.width,canvas.height)}
-function update(){clearCanvas();drawPlatforms();updatePlayer();drawPlayer();requestAnimationFrame(update)}
-document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')keys.right=!0;if(e.key==='ArrowLeft')keys.left=!0;if(e.key==='ArrowUp')keys.up=!0});document.addEventListener('keyup',e=>{if(e.key==='ArrowRight')keys.right=!1;if(e.key==='ArrowLeft')keys.left=!1;if(e.key==='ArrowUp')keys.up=!1});update()
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const player = {
+  x: 50, y: 300,
+  width: 40, height: 40,
+  dx: 0, dy: 0,
+  speed: 2, gravity: 0.5, jumpPower: -10,
+  onGround: false
+};
+const keys = { right: false, left: false, up: false };
+let level = 0;
+
+function drawPlayer() {
+  ctx.fillStyle = 'white';
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+function drawPlatforms() {
+  levels[level].forEach(p => {
+    ctx.fillStyle = p.type === 'spike' ? 'red' : 'black';
+    ctx.fillRect(p.x, p.y, p.width, p.height);
+  });
+}
+
+function checkCollisions(platform) {
+  const playerLeft = player.x;
+  const playerRight = player.x + player.width;
+  const playerTop = player.y;
+  const playerBottom = player.y + player.height;
+  const platformLeft = platform.x;
+  const platformRight = platform.x + platform.width;
+  const platformTop = platform.y;
+  const platformBottom = platform.y + platform.height;
+
+  const horizontalOverlap = playerRight > platformLeft && playerLeft < platformRight;
+  const verticalOverlap = playerBottom > platformTop && playerTop < platformBottom;
+
+  return horizontalOverlap && verticalOverlap;
+}
+
+function updatePlayer() {
+  player.dx = 0;
+  if (keys.right) player.dx = player.speed;
+  if (keys.left) player.dx = -player.speed;
+  player.x += player.dx;
+
+  if (keys.up && player.onGround) {
+    player.dy = player.jumpPower;
+    player.onGround = false;
+  }
+
+  player.dy += player.gravity;
+  const nextY = player.y + player.dy;
+  let landed = false;
+
+  levels[level].forEach(p => {
+    if (checkCollisions(p)) {
+      if (p.type === 'spike') {
+        resetPlayer();
+      } else if (player.y + player.height <= p.y && nextY + player.height >= p.y) {
+        // Landing on platform from above
+        player.dy = p.y - player.y - player.height;
+        landed = true;
+      }
+    }
+  });
+
+  player.y += player.dy;
+  player.onGround = landed;
+
+  // Bottom boundary
+  if (player.y + player.height > canvas.height) {
+    player.y = canvas.height - player.height;
+    player.dy = 0;
+    player.onGround = true;
+  }
+
+  // Wrap around horizontally
+  if (player.x > canvas.width) {
+    player.x = 0;
+    level = (level + 1) % levels.length;
+  } else if (player.x < 0) {
+    player.x = canvas.width - player.width;
+    level = (level - 1 + levels.length) % levels.length;
+  }
+}
+
+function resetPlayer() {
+  player.x = 50;
+  player.y = 300;
+  player.dx = 0;
+  player.dy = 0;
+  level = 0;
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawPlatforms();
+  updatePlayer();
+  drawPlayer();
+  requestAnimationFrame(update);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight') keys.right = true;
+  if (e.key === 'ArrowLeft') keys.left = true;
+  if (e.key === 'ArrowUp') keys.up = true;
+});
+
+document.addEventListener('keyup', e => {
+  if (e.key === 'ArrowRight') keys.right = false;
+  if (e.key === 'ArrowLeft') keys.left = false;
+  if (e.key === 'ArrowUp') keys.up = false;
+});
+
+update();
