@@ -1,1 +1,0 @@
-document.getElementById("w").onclick=function(){location.href="WA/load.html"};document.getElementById("j").onclick=function(){location.href="JS/load.html"};document.getElementById("u").onclick=function(){location.href="UNC/load.html"}
